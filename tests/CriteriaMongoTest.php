@@ -14,7 +14,7 @@ class CriteriaMongoTest extends TestCase
     {
         $criteria = Criteria::where()->type->eq('desktop')
             ->and->bit->eq(64)
-            ->and(Criteria::where(Criteria::where()->OS->eq('ubuntu')->and->version->gte(18.04))
+            ->and(Criteria::where(Criteria::where()->OS->eq('ubuntu')->and->version->gte("18.04"))
                 ->or(Criteria::where(Criteria::where()->OS->gte('')->and->hertz->gte(31)))
             )->and->release_date->gte(Carbon::parse('2019-01-01', 'UTC'))
         ;
@@ -44,7 +44,7 @@ class CriteriaMongoTest extends TestCase
                         },
                         {
                             "version": {
-                                "$gte": 18.039999999999999
+                                "$gte": "18.04"
                             }
                         }
                     ]
