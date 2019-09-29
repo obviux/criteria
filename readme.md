@@ -60,7 +60,71 @@ Use a transformer to generate output the criteria in a specific format. For exam
 generate a query filter for MongoDB\Collection::find():
 
 ```php
+use Criteria\Criteria;
 use Criteria\Transformers\Mongo;
 
+$criteria = Criteria::where()->type->eq('desktop')
+    ->and->bit->eq(64)
+    ->and(Criteria::where(Criteria::where()->OS->eq('ubuntu')->and->version->gte(18.04))
+        ->or(Criteria::where(Criteria::where()->OS->gte('')->and->hertz->gte(31)))
+    )->and->release_date->gte(Carbon::parse('2019-01-01', 'UTC'))
+;
+
 $criteria->transform(new Mongo());
+
+{
+    "$and": [
+        {
+            "type": {
+                "$eq": "desktop"
+            }
+        },
+        {
+            "bit": {
+                "$eq": 64
+            }
+        },
+        {
+            "$or": [
+                {
+                    "$and": [
+                        {
+                            "OS": {
+                                "$eq": "ubuntu"
+                            }
+                        },
+                        {
+                            "version": {
+                                "$gte": 18.039999999999999
+                            }
+                        }
+                    ]
+                },
+                {
+                    "$and": [
+                        {
+                            "OS": {
+                                "$gte": ""
+                            }
+                        },
+                        {
+                            "hertz": {
+                                "$gte": 31
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "release_date": {
+                "$gte": {
+                    "$date": {
+                        "$numberLong": "1546300800000"
+                    }
+                }
+            }
+        }
+    ]
+}
 ```  
