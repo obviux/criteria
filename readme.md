@@ -70,8 +70,12 @@ $criteria = Criteria::where()->type->eq('desktop')
     )->and->release_date->gte(Carbon::parse('2019-01-01', 'UTC'))
 ;
 
-$criteria->transform(new Mongo());
+echo json_encode($criteria->transform(new Mongo()), JSON_PRETTY_PRINT);
+```  
 
+The above example will output:
+
+```php
 {
     "$and": [
         {
@@ -127,4 +131,4 @@ $criteria->transform(new Mongo());
         }
     ]
 }
---```  
+```  
