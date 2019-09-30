@@ -12,12 +12,11 @@ class CriteriaMongoTest extends TestCase
     /** @test */
     public function transformation()
     {
-        $criteria = Criteria::where()->a->eq('test')
-            ->and->b->in('dvorak', 'qwerty')
-            ->and(Criteria::where(Criteria::where()->c->gte(10)->and->c->lt(20))
-                ->or->d->gte(Carbon::parse('2019-01-01', 'UTC'))
-                ->or(Criteria::where()->e->gte(Carbon::parse('2019-01-01', 'UTC')))
-            )
+        $criteria = Criteria::where()->type->eq('desktop')
+            ->and->bit->eq(64)
+            ->and(Criteria::where(Criteria::where()->OS->eq('ubuntu')->and->version->gte("18.04"))
+                ->or(Criteria::where(Criteria::where()->OS->gte('')->and->hertz->gte(31)))
+            )->and->release_date->gte(Carbon::parse('2019-01-01', 'UTC'))
         ;
         $json = json_encode($criteria->transform(new Mongo()), JSON_PRETTY_PRINT);
 
@@ -25,16 +24,13 @@ class CriteriaMongoTest extends TestCase
 {
     "$and": [
         {
-            "a": {
-                "$eq": "test"
+            "type": {
+                "$eq": "desktop"
             }
         },
         {
-            "b": {
-                "$in": [
-                    "dvorak",
-                    "qwerty"
-                ]
+            "bit": {
+                "$eq": 64
             }
         },
         {
@@ -42,36 +38,41 @@ class CriteriaMongoTest extends TestCase
                 {
                     "$and": [
                         {
-                            "c": {
-                                "$gte": 10
+                            "OS": {
+                                "$eq": "ubuntu"
                             }
                         },
                         {
-                            "c": {
-                                "$lt": 20
+                            "version": {
+                                "$gte": "18.04"
                             }
                         }
                     ]
                 },
                 {
-                    "d": {
-                        "$gte": {
-                            "$date": {
-                                "$numberLong": "1546300800000"
+                    "$and": [
+                        {
+                            "OS": {
+                                "$gte": ""
+                            }
+                        },
+                        {
+                            "hertz": {
+                                "$gte": 31
                             }
                         }
-                    }
-                },
-                {
-                    "e": {
-                        "$gte": {
-                            "$date": {
-                                "$numberLong": "1546300800000"
-                            }
-                        }
-                    }
+                    ]
                 }
             ]
+        },
+        {
+            "release_date": {
+                "$gte": {
+                    "$date": {
+                        "$numberLong": "1546300800000"
+                    }
+                }
+            }
         }
     ]
 }
@@ -84,11 +85,13 @@ JSON;
     {
         $methods = [
             'in' => [1, 2, 3],
+            'nin' => [1, 2, 3],
             'eq' => 1,
-            'gt' => 2,
-            'gte' => 3,
-            'lt' => 4,
-            'lte' => 5,
+            'ne' => 2,
+            'gt' => 3,
+            'gte' => 4,
+            'lt' => 5,
+            'lte' => 6,
         ];
 
         foreach ($methods as $method => $value) {
