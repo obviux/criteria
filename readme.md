@@ -9,7 +9,7 @@ Create a basic filter that will find any elements where the name property is equ
 
 ```php
 $criteria = Criteria::where()->name->eq('May B. Wright');
-```  
+```
 
 Create a filter with multiple requirements:
 
@@ -18,7 +18,7 @@ $criteria = Criteria::where()->name->eq('Justin Case')
     ->and->age->gte(20)
     ->and->age->lt(30)
 ;
-``` 
+```
  
 This filter will match on any of the criterion:
 
@@ -27,7 +27,7 @@ $criteria = Criteria::where()->shape->eq('square')
     ->or->color->eq('red')
     ->or->size('medium')
 ;
-```  
+```
 
 Match on any or none of a list of multiple values. The list can either be provided as multiple arguments or as an 
 array:
@@ -44,7 +44,7 @@ Nesting is required to mix and/or criteria:
 $criteria = Criteria::where(Criteria::where()->created->gte('2017-01-01')->and->created->lt('2018-01-01'))
     ->or(Criteria::where()->created->gte('2015-01-01')->and->created->lt('2016-01-01'))
 ;
-``` 
+```
 
 If one of the elements is a single criterion, the initial criteria can be skipped:
 
@@ -52,7 +52,7 @@ If one of the elements is a single criterion, the initial criteria can be skippe
 $criteria = Criteria::where()->created->gte('2019-01-01')
     ->or(Criteria::where()->color->ne('white')->and->size->in('small', 'medium'))
 ;
-```  
+```
 
 ### Transformation of criteria
 
@@ -71,7 +71,7 @@ $criteria = Criteria::where()->type->eq('desktop')
 ;
 
 echo json_encode($criteria->transform(new Mongo()), JSON_PRETTY_PRINT);
-```  
+```
 
 The above example will output:
 
@@ -131,4 +131,4 @@ The above example will output:
         }
     ]
 }
-```  
+```
