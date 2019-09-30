@@ -65,8 +65,8 @@ use Criteria\Transformers\Mongo;
 
 $criteria = Criteria::where()->type->eq('desktop')
     ->and->bit->eq(64)
-    ->and(Criteria::where(Criteria::where()->OS->eq('ubuntu')->and->version->gte(18.04))
-        ->or(Criteria::where(Criteria::where()->OS->gte('')->and->hertz->gte(31)))
+    ->and(Criteria::where(Criteria::where()->OS->eq('ubuntu')->and->version->gte("18.04"))
+        ->or(Criteria::where(Criteria::where()->OS->gte('fedora')->and->version->gte(30)))
     )->and->release_date->gte(Carbon::parse('2019-01-01', 'UTC'))
 ;
 
@@ -99,7 +99,7 @@ The above example will output:
                         },
                         {
                             "version": {
-                                "$gte": 18.039999999999999
+                                "$gte": "18.04"
                             }
                         }
                     ]
@@ -108,12 +108,12 @@ The above example will output:
                     "$and": [
                         {
                             "OS": {
-                                "$gte": ""
+                                "$gte": "fedora"
                             }
                         },
                         {
-                            "hertz": {
-                                "$gte": 31
+                            "version": {
+                                "$gte": 30
                             }
                         }
                     ]
