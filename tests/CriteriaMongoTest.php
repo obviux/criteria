@@ -15,7 +15,7 @@ class CriteriaMongoTest extends TestCase
         $criteria = Criteria::where()->type->eq('desktop')
             ->and->bit->eq(64)
             ->and(Criteria::where(Criteria::where()->OS->eq('ubuntu')->and->version->gte("18.04"))
-                ->or(Criteria::where(Criteria::where()->OS->gte('')->and->hertz->gte(31)))
+                ->or(Criteria::where(Criteria::where()->OS->gte('fedora')->and->version->gte(30)))
             )->and->release_date->gte(Carbon::parse('2019-01-01', 'UTC'))
         ;
         $json = json_encode($criteria->transform(new Mongo()), JSON_PRETTY_PRINT);
@@ -53,12 +53,12 @@ class CriteriaMongoTest extends TestCase
                     "$and": [
                         {
                             "OS": {
-                                "$gte": ""
+                                "$gte": "fedora"
                             }
                         },
                         {
-                            "hertz": {
-                                "$gte": 31
+                            "version": {
+                                "$gte": 30
                             }
                         }
                     ]
