@@ -131,4 +131,4 @@ The above example will output:
 ```
 
 ### License
-The MIT License (MIT). Please see [License File](license.md) for more information.
+[MIT](./license.md)
