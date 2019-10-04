@@ -5,7 +5,7 @@ the underlying datasets.
 
 ### Installation
 You can install the package via composer:
-```
+```bash
 composer require obviux/critera
 ```
 
